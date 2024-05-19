@@ -1,0 +1,465 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[francais]{babel}%Langue
+%\usepackage{lmodern}%Police
+\usepackage{tgpagella}%Police
+\usepackage[utf8]{inputenc}%Pour avoir des accents
+\usepackage[T1]{fontenc}%Pour avoir une belle cesure
+\usepackage{microtype} % Améliore le texte
+
+\usepackage{graphicx} %permet de mettre des images
+\usepackage{amsmath, amsfonts, amssymb, amstext, amsthm}%Maths
+\usepackage{mathtools}%Plus de maths
+\usepackage{float}%Aide pour l'insertion de figures
+\usepackage{systeme} %Permet d'écrire des systèmes de façon jolie
+\usepackage{ulem} %Pour underliner
+\usepackage{setspace}%Permet de fixer la distance interligne
+\usepackage{datetime} %Permet d'avoir la date
+\usepackage{listings}% Pour écrire du code
+\usepackage[dvipsnames]{xcolor}%Permet d'utiliser des couleurs
+\usepackage{subfig}%Permet de faire des sous-figures
+\usepackage{hyperref}%Permet de faire des liens 
+\usepackage[export]{adjustbox}%Pour ajuster les choses dans les boîtes
+\usepackage{fancybox}% Jolies boîtes
+\usepackage{tcolorbox}% D'autres bpîtes
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+\usetikzlibrary{calc} 
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\tikzset{
+	% Add more line modifications here:
+	papyrus line/.style={ line width=1pt }
+}
+
+
+\def\drawRole#1#2#3{%
+	\begin{scope}[yscale=#2,scale=0.6*#3]
+		% Draw role on the left
+		\draw[papyrus line] (A.#1 west) .. controls +(0,1) and +(0,1) .. +(-1,0) .. controls +(0,-1) and +(0,-1) .. +(-.2,0) .. controls +(0,.7) and +(0,.7) .. +(-.8,0) .. controls +(0,-.5) and +(0,-.5) .. +(-.5,0) -- +(-.2,0);
+		\draw[papyrus line] (A.#1 west) +(-.6,-.75) -- +(0,-.75);
+		\draw[papyrus line] (A.#1 west) +(-.65,-.375) -- +(-.25,-.375);
+		
+		
+		% Draw right corner and vertical line
+		\draw[papyrus line] (A.#1 east) .. controls +(0,.7) and +(.4,0) .. +(-.5,0.751) -- ($(A.#1 west)+(-.5,.751)$);
+	\end{scope}
+}
+
+\newcommand\papyrus[2][1]{%
+	\tikz{
+		\node[inner xsep=1em, inner ysep=0.5em] (A) {#2};  % Draw the text of the node
+		\begin{pgfonlayer}{background}  % Draw the shape behind
+			
+			\drawRole{north}{1}{#1}
+			\drawRole{south}{-1}{#1}
+			
+			%\draw ([papyrus line] A.north west) -- (A.north east);
+			\draw[papyrus line] (A.north east) -- (A.south east);
+			%\draw[papyrus line] (A.south east) -- (A.south west);
+			\draw[papyrus line] (A.south west) -- (A.north west);
+			%\fill[white]   (A.north west) -- (A.north east) -- (A.south east) -- (A.south west) -- (A.north west);
+	\end{pgfonlayer}}
+}
+
+\usepackage{parskip} % Enlève les alinéas
+\usepackage{svg} % Permet l'importation de svg
+\usepackage[draft]{endiagram}%Diagrammes d'énergie
+
+
+\usepackage{array} % enables >{...} in the coumn specifier section, used in table 2 & 3
+\usepackage{booktabs} % for improved spacing around horizontal lines, used in example 3, incompatible with vertical lines, be careful if you want to to combine it with color
+
+
+\usepackage{xcolor,colortbl}
+
+\usepackage[column=0]{cellspace} % for adding a small amount of space above and below each cell, only used in table 2
+\setlength{\cellspacetoplimit}{2pt}
+\setlength{\cellspacebottomlimit}{\cellspacetoplimit}
+
+\usepackage{french}
+\usepackage{indentfirst}
+
+\usepackage{fancyhdr}%Jolis headers
+\pagestyle{fancy}
+\fancyhead[LO,L]{C.Solon, A.Lemoine}
+\fancyhead[CO,C]{Théorie des jeux : Coopération}
+\fancyhead[RO,R]{29 Février 2024}
+\fancyfoot[LO,L]{}
+\fancyfoot[CO,C]{\thepage}
+\fancyfoot[RO,R]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\RequirePackage[table]{xcolor}
+\RequirePackage{booktabs}
+\RequirePackage{multirow}
+
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour}, commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=false,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+\lstset{style=mystyle}
+
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Required for inserting images
+
+\title{\Huge Rapport du Projet Informatique \\Théorie des Jeux : Coopération}
+\author{\Large Caroline Solon, Alexis Lemoine}
+\date{\large 13 Mars 2024}
+
+\begin{document}
+\maketitle
+\vspace{60pt}
+\onehalfspacing
+
+
+\begin{abstract}
+\normalsize%Pour que le texte de l'abstract soit de la même taille que le reste du document
+
+Dans ce rapport nous allons détailler notre implémentation du problème de  coopération dans le logiciel Microsoft Excel par le biais d'un code en Visual Basic. Le fonctionnement du programme de simulation sera expliqué et les résultats obtenus en fonctions des différents comportements seront analysés.
+
+\end{abstract}
+
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[!tbp]{0.3\textwidth}
+    \includegraphics[width=1.1\textwidth]{IMG_0510.png}
+  \end{minipage}
+  \hfill
+  \hfill
+  \begin{minipage}[!tbp]{0.3\textwidth}
+    \includegraphics[width=1\textwidth]{vba.png}
+  \end{minipage}
+\end{figure}
+
+\newpage
+\renewcommand*\contentsname{\Huge{Sommaire : }}
+\tableofcontents
+
+\newpage
+
+\section{Introduction au problème de la coopération}
+%L'étoile permet d'enlever les numéros des titres
+
+%Théorie des jeux
+\subsection*{Brève description de la Théorie des jeux}
+
+La théorie des jeux est une branche des mathématiques qui offre une description formelle des interactions stratégiques entre individus ou groupes. Le résultat pour chaque groupe ou individu dépend non seulement des ses propres actions mais aussi de celles des autres. La théorie des jeux aide à comprendre comment différents acteurs peuvent agir dans des contextes compétitifs ou coopératifs pour maximiser leurs gains, ses fondements sont établis dans les années 20 par les mathématiciens Ernst Zermelo et Emile Borel puis développés dans les années 40 par Morgenstern et Von Neumann.  
+
+On peut classifier les problèmes de théorie des jeux selon différents critères :
+
+\textbf{Jeux coopératifs et non coopératifs: }
+
+\begin{itemize}
+    \doublespacing
+    \item[\bullet] Coopératifs : Les agents peuvent former des alliances pour améliorer leurs résultats. 
+    \item[\bullet] Non-coopératifs : Les agents prennent des décisions de manière indépendantes et l'accent est mis sur les stratégies individuelles. 
+\end{itemize}
+
+\textbf{Jeux séquentiels et simultanés : }
+
+\begin{itemize}
+    \doublespacing
+    \item[\bullet] Séquentiels : Les agents prennent leurs décisions en ayant connaissance de celles des autres.
+    \item[\bullet] Simultanés : Les agents prennent leurs décisions en même temps, n'ayant pas connaissance de celles des autres. 
+\end{itemize}
+
+\textbf{Jeux à somme nulle et  à somme non nulle : }
+
+\begin{itemize}
+    \doublespacing
+    \item[\bullet] Somme nulle : Le gain total entre joueur reste constant, si un gagne, l'autre perd. 
+    \item[\bullet] Somme non nulle : Les gains ou pertes ne s'annulent pas forcément, les joueurs peuvent perdre ou gagner en même temps. 
+\end{itemize}
+
+La théorie des jeux est un outil central dans la théorisation de nombreux domaines comme l'économie, la biologie ou bien même les relations internationales. 
+
+%Jeux coopératifs
+\subsection*{Les problèmes de coopération}
+
+La coopération de petites entités qui respectent des règles simples permet la formation de structures complexes qui adoptent un comportement difficilement prévisible, les sociétés humaines en sont un exemple, étant le résultat de nombreux individus aux comportement différents. Étant donné que certains comportements sont favorisés par rapport à d'autres, il est alors intéressant de pouvoir les modéliser.
+
+Les jeux coopératifs permettent d'analyser des modèles de conflits entre l'intérêt collectif et l'intérêt individuel. En modélisant différents comportements, on peut simuler, analyser et même prédire quelles stratégies les agents doivent adopter pour maximiser leurs gains. Dans la vraie vie, la coopération peut être expliquée par la réciprocité, (coopération dans l'attente de bénéfices en retour), l'altruisme (Si les individus sont génétiquement apparentés, ils ont intérêt à s'aider), les normes sociales et culturelles et aussi certains mécanismes d'incitation. 
+
+Un des problèmes de coopération les plus connus est le dilemme du prisonnier, énoncé en 1950 par Albert Tucker comme ceci : 
+
+
+
+\vspace{10pt}
+
+\papyrus{
+			\parbox{.9\textwidth}{Deux prisonniers, accusés d'être complices d'un crime, sont détenus séparément par la police. Chacun 
+est informé que :
+
+\begin{itemize}
+\doublespacing
+\item[\bullet] Si l'un des deux avoue et l'autre non, le premier aura une récompense (gain +1) alors que le second 
+sera lourdement condamné (gain -2),
+
+\item[\bullet] Si les deux avouent, ils subiront tous les deux une peine légère (gain -1).
+
+\item[\bullet] Si aucun des deux n'avoue, chacun repartira libre (gain 0).
+\end{itemize}}
+		}
+
+\vspace{10pt}
+
+Dans ce problème à deux agents, le dilemme vient de la non coïncidence entre l'intérêt individuel et l'intérêt collectif.
+
+%Notre implémentation des jeux coopératifs. 
+
+\subsection*{Notre implémentation du Problème de la Coopération}
+
+Dans ce rapport nous implémentons une généralisation du dilemme du prisonnier à N individus, chaque agent est exposé au dilemme et doit choisir soit de coopérer soit de ne pas coopérer, c'est à dire faire défection. Ce choix est fait sans connaître celui de l'autre et dépend de la personnalité de l'agent. Les différentes personnalités sont également appelées "règles" qui sont détaillées ci-dessous. Notre modèle est alors un jeu non-coopératif simultané à somme non-nulle. 
+
+Voici comment se fait le décompte des points : 
+
+\begin{itemize}
+    \doublespacing
+    \item[\bullet] Si deux agents coopèrent, ils gagnent tous les deux 3 points. 
+    \item[\bullet] Si seulement un agent coopère et l'autre choisi de faire défection, celui ayant coopéré perd un point et l'autre en gagne 4. 
+    \item[\bullet] Si aucun ne coopère, le bilan est nul. 
+\end{itemize}
+
+
+Le modèle comporte par défaut 400 agents placés sur une grille 20$\times$20 cases (le monde est plat). Chaque agent adopte initialement une "règle" et pour un nombre de tours fixé chaque agent devra au minima interagir avec un autre une fois. Une fois tous les tours finis le décompte des points est fait et il est possible de déterminer quel profil est gagnant. 
+
+
+
+\subsection*{Liste des différentes règles}
+
+\begin{tcolorbox}[colback=white,colframe=black!75!white,arc=3pt]
+
+    \doublespacing
+    
+    \textcolor{red}{$\bullet$} \textbf{Égoïste} : Fait toujours défection
+    \\
+    \textcolor{green}{$\bullet$}   \textbf{Généreux} : Coopère systématiquement
+    \\
+    \textcolor{blue}{$\bullet$} \textbf{Familial} : Coopère systématiquement avec les robots à une distance $\leq 2$
+    \\
+    \textcolor{yellow}{$\bullet$} \textbf{Lunatique} : Il choisit aléatoirement de collaborer ou pas
+    \\
+    \textcolor{pink}{$\bullet$} \textbf{Sectaire} : Les membres de la secte sont étiquetés et collaborent uniquement entre eux. 
+    \\
+    \textcolor{violet}{$\bullet$} \textbf{Psychotique} : A ce robot est associé une rancune initialement fixée à 0 et qui augmente à chaque fois que quelqu'un fait défection face à lui. Il collabore systématiquement au début puis, lorsque la rancune atteint un seuil à fixer, il ne collabore plus du tout. Ce seuil est d'abord fixé à 20 puis peut être manuellement déterminé. 
+    \\
+    \textcolor{teal}{$\bullet$} \textbf{Réputation} : Chaque robot à un score de badboy initialisé à 0 et qui augmente de 1 à chaque fois qu'il fait défection. Le robot badboy collabore systématiquement avec les robots ayant un score badboy inférieur à un seuil et refuse systématiquement pour les autres. Ce seuil est d'abord fixé à 20 puis peut être manuellement déterminé.
+    \\
+    \textcolor{olive}{$\bullet$} \textbf{Donnant-Donnant} : Coopère toujours lorsqu’il rencontre un robot pour la première fois. Ensuite, il imite l’action de son vis-à-vis lors de leur dernière rencontre.
+    \\
+    \textcolor{Aquamarine}{$\bullet$} \textbf{Pardon} : Coopère la première fois puis agit de la même façon que celui qu'il a rencontré à agit précédemment. 
+    \\
+    \textcolor{purple}{$\bullet$} \textbf{Éléphant} : Se souvient des dix dernières rencontres entre les robots. Si l'autre a plus collaboré, il collabore, s'il a plus fait défection, il fait défection. 
+    \\
+    \textcolor{orange}{$\bullet$} \textbf{Éléphant Lunatique} : Fait la même chose mais tire au hasard une action dans les dix dernières rencontres. 
+    \\
+    $\circ$ \textbf{Indécis} : Alterne entre coopération et non coopération
+
+
+\end{tcolorbox}
+
+\section{Pas à pas et Manuel}
+
+Voici un protocole qui présente les étapes à suivre pour faire fonctionner le programme : 
+
+\begin{enumerate}
+    \item $\text{Ouvrir le fichier Projet informatique\_23\_24-Coopération-LEMOINE\_SOLON.xlsm}$
+    \item Vérifier que le mode développeur est activé sur Excel et que les macros ne sont pas bloquées. 
+    \item Une fois le fichier ouvert, cliquer sur le gros bouton "Ouvrir le centre de commande", une interface est censée apparaître
+    
+    \begin{figure}[H]
+    \centering
+    \vspace{25pt}
+    \includegraphics[width=17cm]{interface.jpg}
+    \caption{Aspect de la feuille de Calcul Excel lorsqu'elle est ouverte}
+    \end{figure}    
+    
+    \begin{figure}[H]
+    \centering
+    \vspace{25pt}
+    \includegraphics[width=14cm]{SharedScreenshot.jpg}
+    \caption{Panneau de contrôle depuis lequel sont lancées les simulations}
+    \end{figure}
+
+    \item Pour lancer la simulation, appuyer sur "Lancement de la simulation". Ceci lancera une simulation avec les paramètres par défaut, qui sont listés dans le tableaux ci-dessous. Une fois que le programme a fini de tourner, il est possible de visualiser les résultats en regardant la grille colorée et en regardant le graphe qui fait le décompte des scores de chaque règle.
+
+
+    \begin{figure}[H]
+    \centering
+    \vspace{25pt}
+    \includegraphics[width=13.5cm]{résultats.jpg}
+    \caption{Panneau de contrôle depuis lequel sont lancées les simulations}
+    \end{figure}
+
+    \item Il est possible de changer les paramètres de la simulation. Pour sélectionner les rôles présents il suffit de les cocher ou des les décocher. La zone  de saisie située à droite sert à définir la répartition des rôles. La probabilité que chaque rôle a d'être choisi est définie comme telle : $$ \mathbb{P}(\text{Role}) = }\frac{\omega}{N}$$
+
+    Où $\omega$ représente le multiplicateur de probabilité choisie par l'utilisateur à rentrer dans la zone de saisie à droite du rôle et $N$ le nombre total de rôles présents dans la simulation. Si rien ou une valeur non entière est rentrée, la valeur par défaut est prise.
+
+    \item Pour les rôles réputation et psychotique, il est possible de régler les seuils qui leur sont associés dans les zones d'entrées prévues à cet effet. Si rien ou une valeur non entière est rentrée, la valeur par défaut est prise.
+
+    \item Le paramètre "Nombre de Tours" fixe le nombre d'itération de la simulation, qui est donc le nombre minimum d'intéraction qu'un robot aura eu pendant la simulation. Si rien ou une valeur non entière est rentrée, la valeur par défaut est prise.
+
+    \item Le bouton "Changement de Règle", s'il est enfoncé permet de changer la règle de tous les robots ayant un score inférieur à certain seuil en celui ayant eu le meilleur score au bout d'un certain nombre de tours qui peut être choisi. 
+    $$ \text{Seuil} = \mathrm{Max} - \frac{\mathrm{Max} - \mathrm{Min}}{4} $$
+    
+    $\mathrm{Max}$ et $\mathrm{Min}$ représentent respectivement le meilleur score d'un robot et le pire score d'un robot. Si rien ou une valeur non entière est rentrée, la valeur par défaut est prise.
+
+    \item Le bouton "Transformer les rôles à mémoire en Généreux au changement de règle". Fait exactement ce qu'il décrit. Il ne fonctionne que si le changement de règle est activé. \textcolor{gray}{\textit{Il a été remarqué assez tard que l'implémentation de cette fonctionnalité est le résultat d'une erreur de compréhension de l'énoncé.}}
+
+    
+\end{enumerate}
+
+
+\begin{table}[htbp]
+\onehalfspacing
+\label{tab:2}
+\centering
+\begin{tabular}{>{\itshape}ll}
+\toprule % replaced all \hline commands with rules from the booktabs package
+\textup{Paramètres}       & Valeurs par défaut\\
+\midrule
+Seuil de Rancune                & 20\\
+Seuil de Bad-Boy                     & 20\\
+Présence d'un rôle                    & VRAI \\
+Probabilité d'être choisi                    & $\frac{1}{N}$\\
+Taille du Monde                    & 20 \times 20 \\
+Nombre de Tours & 40   \\
+Changement de règle & FAUX   \\
+Nombre de Tours auquel à lieu le changement de règle & 40   \\
+Transformer les rôles à mémoire en Généreux au changement de règle & FAUX   \\
+
+\bottomrule
+\end{tabular}
+\caption{Paramètres par défauts pour les simulations}
+\end{table}
+
+
+
+
+\section{Fonctionnement de l’Algorithme}
+
+\subsection*{Description écrite}
+
+\subsubsection*{Structure générale}
+
+Après nous être penchés sur l'approche pas à pas, nous allons essayer de comprendre le programme selon une vue d'ensemble. Le programme est composé de deux scripts principaux, celui qui code l'interface, à partir de laquelle les constantes et les paramètres de la simulation sont choisies et définies comme des variables globales et le script principal qui prend en entrée ces paramètres pour effectuer la simulation, structurée comme une grande boucle qui parcours toutes les itérations et tous les robots. Lorsque la simulation est terminée, les résultats sont calculés et le tableur est mis à jour pour afficher ces derniers. 
+
+\subsubsection*{Déclaration des variables}
+
+Les propriétés de chaque robot comme leur score, leur rôle, sont stockées dans des tableaux (array en fait), de la même taille que le monde, ainsi chaque robot peut être identifié par ses coordonnées $(i,j)$ sur ce tableau, la description des différents tableaux est donnée ci-dessous. Pour les rôles à mémoire, il existe des tableaux qui contiennent eux-même des collections qui répertorient les robots rencontrés ainsi que leurs dix dernières actions. Lorsque nécessaire, des fonctions parcourent ces tableaux de collections pour vérifier si deux robots se sont rencontrés et renvoyer leurs actions passées. 
+
+\subsubsection*{Fonctionnement de la simulation}
+
+Une fois les paramètre définis et la simulation lancée, les rôles sont attribués, de façon aléatoire ou pondérée, en fonction de ce que l'utilisateur a décidé. Chaque rôle est identifié par le programme par un entier allant de 0 à 11 et peut être identifié par l'utilisateur par sa couleur. Une fois les rôles définis, pour toutes les itérations, chaque robot fait le choix, de stocker sous forme de booléen et en fonction des règles de son rôle, de coopérer ou de faire défection face à un autre robot tiré au sort, sans connaître le choix de ce dernier qui est effectué dans la foulée. Une fois les deux ayant fait leur choix, les propriétés (mémoire, réputation, rancune, etc...) sont mises à jour puis les points sont distribués au deux robots en fonction de l'issue de la rencontre. Si l'option de changement de règle est activée, et que l'itération associée est atteinte alors les rôles ayant un score sous le seuil sont remplacés par le rôle ayant le meilleur score. Lorsque toutes les itérations (nombre de tours) sont finies, les scores de chaque robot sont calculés, regroupés par rôle et affichés sur le tableur.  
+
+\vspace{10pt}
+
+\begin{table}[htbp]
+\onehalfspacing
+\label{tab:2}
+\centering
+\begin{tabular}{>{\itshape}lll}
+\toprule % replaced all \hline commands with rules from the booktabs package
+\textup{Tableau}       & Type de donnée & Information contenue\\
+\midrule
+scores(i,j)                & Entier & Score de chaque robot \\
+grid(i,j)                & Entier & Index du type de robot \\
+sectMember(i,j)                & Booléen & Appartenance du robot à la secte \\
+rancune(i,j)                & Entier & Score de rancune du robot \\
+badboyscore(i,j)                & Entier & Score de réputation du robot \\
+indecis(i,j)                & Booléen & Action précédente de l'indécis    \\
+noms\_robots\_rencontrés(i,j)                & Collection & Noms des robots rencontrés    \\
+noms\_robots\_rencontrés(i,j,k)                & Collection & Actions des robots rencontrés    \\
+
+\bottomrule
+\end{tabular}
+\caption{Tableaux principaux utilisés dans la simulation servant de mémoire}
+\end{table}
+
+\vspace{10pt}
+
+Un diagramme général de fonctionnement de l'algorithme figure ci-dessous. 
+
+
+
+\subsection*{Diagramme général de fonctionnement de l'algorithme}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm]{diagramme.drawio (2).png}
+    \caption{Diagramme de fonctionnement de l'algorithme}
+\end{figure} 
+
+
+
+\section{Résultats et observations}
+
+Il y a trop de paramètres dans l'algorithme pour pouvoir raisonnablement tester tous les cas de figure, cependant on peut dégager quelques observations générales, qui seront en majorité faites avec les paramètres par défaut. 
+
+\subsection*{Observations générales}
+
+On se rend compte que lorsqu'on fait tourner la simulation avec les paramètres par défaut, le sectaire, l'indécis et l'égoïste arrivent le plus souvent en tête des scores. Les pires scores sont souvent attribués au généreux, au donnant-donnant et au pardon. Ces faibles scores pour les rôles à mémoire peuvent s'expliquer par le fait que le nombre de tours assez faible sélectionné par défaut (40) ne leur permet pas d'utiliser suffisamment leur mémoire puisque statistiquement la plupart des rencontres qu'ils feront seront uniques. Ces robots s'apparentent alors au comportement du généreux. Si l'on essaie de se limiter aux rôles simples alors les rôles en tête sont le généreux et le familial. De manière générale, le jeu semble favoriser la non-coopération. 
+
+\subsection*{Influence du changement de règle}
+
+Si l'on essaie de garder seulement les rôles simples (généreux, familial, égoïste, lunatique et sectaire) et d'introduire un changement de règle au bout de 40 tours pour 400 itérations on remarque que le sectaire est quasiment totalement vainqueur, l'entièreté de la grille excepté quelques cellules devenant sectaires. 
+
+\begin{figure}[h!]
+    \centering
+    \subfloat[\centering Résultats sans changement de règle]{{\includegraphics[width=6cm]{achg.jpg} }}%
+    \qquad
+    \subfloat[\centering Résultats avec changement de règle]{{\includegraphics[width=6cm]{chg.jpg} }}%
+    \vspace{10pt}
+    \label{fig:images}%
+\end{figure}
+
+De façon générale, le rôle gagnant, si ce n'est pas le sectaire, finit par occuper quasiment toutes les cellules lorsque le changement de règle est décidé. 
+
+
+\subsection*{Influence de la taille du monde}
+
+Le premier effet visible de la taille du monde est celui sur les performances du programme. Lorsque la taille du monde est diminuée, le programme se termine beaucoup plus vite, inversement plus le monde est grand moins les performances sont bonnes. Augmenter la taille du monde n'a que pour effet de confirmer statistiquement les résultats généraux qui on déjà été observés. Diminuer grandement la taille du monde tend à produire des résultats moins conventionnels, même si la secte reste souvent gagnante.  
+
+\subsection*{Influence des changements de seuils}
+
+On remarque que lorsque on augmente le seuil badboy, de façon prédictible, les performances du rôle réputation baissent. On peut tester cela en opposant le rôle réputation au rôle égoïste. Avec les paramètres par défaut (Seuil Bad-Boy à 20), le robot réputation gagne tout le temps. Lorsqu'on augmente ce seuil à 50, le rôle réputation devient moins méfiant et donc le rôle égoïste gagne. 
+
+Pour tester le seuil de rancune, on oppose le psychotique au lunatique. Avec le seuil par défaut (20), les deux rôles sont un peu près à égalité. Si on rend le psychotique plus susceptible en diminuant le seuil de rancune jusqu'à 3, le psychotique gagne alors presque systématiquement. 
+
+\subsection*{Influence du nombre de tours}
+
+Il est intéressant de regarder l'influence du nombre de tours sur les rôles à mémoire puisque leur nature fait qu'il faut un nombre de tours plus élevé pour pouvoir pleinement utiliser leurs caractéristiques. Comme les rôles à mémoire mettent plus de temps a être calculés, on diminue la taille du monde en 15$\times$15. Si l'on essaie d'opposer l'égoïste au donnant-donnant on remarque que l'égoïste est gagnant jusqu'à environ 200 tours, jusqu'à ce que par la suite le donnant-donnant l'emporte. On observe la même tendance avec le rôle pardon sauf qu'il faut encore plus de tours pour que celui-ci se mette à gagner (environ 250). On observe des tendances similaires avec les rôles éléphants sauf qu'il faut moins de tours pour qu'ils soient gagnants face à l'égoïste (100). 
+
+\subsection*{Influence du changement de proportion}
+
+Sans surprise, pour tous les rôles, lorsqu'on augmente la proportion des rôles, ils ont plus tendance à avoir de meilleurs scores. Par exemple, avec toutes les règles sélectionnées, multiplier par trois la probabilité que le généreux soit choisi suffit pour le faire gagner.  
+
+\section{Conclusions}
+
+Notre programme nous a permis de mettre en pratique la théorie des jeux à travers une simulation généralisée du dilemme du prisonnier à N individus. Pour rendre l'expérimentation plus facile nous avons ajouté une interface graphique. Il est difficile d'en tirer des conclusions définitives tant il y a de paramètres et de scénarios à tester mais notre programme nous a permis de réaliser une expérience sociale sans avoir besoin d'interroger qui que se soit d'humain. Il n'est alors pas étonnant d'apprendre que la théorie des jeux a été l'objet d'études plus rigoureuses.  
+
+
+\end{document}
